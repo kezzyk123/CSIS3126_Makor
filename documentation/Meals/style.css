@@ -50,25 +50,7 @@ body{
     margin-left: 10px;
 }
 
-button{
-    padding:10px 20px;
-    cursor:pointer;
-    font-weight: 600;
 
-}
-
-.signup{
-    background: transparent;
-    border: none;
-}
-
-.signin{
-    background-color: gray;
-    color:white;
-    outline: none;
-    border:none;
-    border-radius: 5px;
-}
 
 .intro{
     display:grid;
@@ -190,3 +172,4 @@ button{
     font-family: sans-serif;
     
   }
+

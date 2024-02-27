@@ -1,14 +1,20 @@
+<?php
+
+include("connect.php");
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-    <link rel ="shortcut icon" href="./Images/favicon.jpg" type="Images/meals-favicon"> <!----short cut icon-->
+    <link rel="shortcut icon" href="./Images/favicon.jpg" type="Images/meals-favicon"> <!----short cut icon-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal Planning | Home </title>
 </head>
 <body>
-    <!---top layer headings-->
     <section class="menu">
         <div class="nav">
             <div class="logo">
@@ -20,8 +26,8 @@
                     <li><a href="#">Shopping List</a></li>             
                 </ul>         
                 <div>
-                    <button class="signin">Sign In</button>
-                    <button  onclick="windows.location.href='register.php'" class="signup">Sign Up </button>
+                    <button class="w3-button w3-white w3-border w3-border-red w3-round-large" onclick="window.location.href='logout.php'" class="logout">Log out</button>
+                   
                 </div>
         </div>
     </section>
