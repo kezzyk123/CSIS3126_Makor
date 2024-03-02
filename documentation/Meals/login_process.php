@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // SQL query to fetch user details
     $query = "SELECT * FROM users WHERE username='$username'";
+   
     $result = mysqli_query($connection, $query);
 
     if (mysqli_num_rows($result) == 1) {

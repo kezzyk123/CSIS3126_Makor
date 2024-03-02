@@ -22,7 +22,7 @@ include("connect.php");
                 <ul>
                     <li><a class="active" href="#">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
-                    <li><a href="#">Browse Meals</a></li>
+                    <li><a href="meal_gallery.php">Browse Meals</a></li>
                     <li><a href="#">Shopping List</a></li>             
                 </ul>         
                 <div>
