@@ -1,44 +1,51 @@
 <?php
 session_start();
 
-// Include the database connection file
-include_once "connect.php";
 
-// Check if the form is submitted
+include("connect.php");
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $username = $_POST["username"];
-    $password = $_POST["password"];
 
-    // SQL query to fetch user details
-    $query = "SELECT * FROM users WHERE username='$username'";
-   
-    $result = mysqli_query($connection, $query);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    if (mysqli_num_rows($result) == 1) {
-        // User found, verify password
-        $row = mysqli_fetch_assoc($result);
+    // Hashes the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Query to check if the user exists in the database
+    $query = "SELECT * FROM users WHERE username=?";
+    
+    // Prepare the statement
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    
+    // Execute the statement
+    mysqli_stmt_execute($stmt);
+    
+    // Get the result
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        // Verify the password
         if (password_verify($password, $row['password'])) {
-            // Password is correct, set session variables
-            $_SESSION["username"] = $username;
-            // Redirect to dashboard or home page
+            // if password is correct, set up session and redirect to index.php
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['username'] = $row['username'];
             header("Location: index.php");
             exit();
         } else {
-            // Password is incorrect
-            $error = "Invalid username or password.";
+            // Invalid password
+            $error = "Invalid username or password";
         }
     } else {
-        // User not found
-        $error = "Invalid username or password.";
+        // User does not exist
+        $error = "Invalid username or password";
     }
-
-    // Redirect back to login page with error message
-    header("Location: login.php?error=" . urlencode($error));
-    exit();
-} else {
-    // If the form is not submitted, redirect to login page
-    header("Location: login.php");
-    exit();
 }
+
+// Closes everything
+mysqli_stmt_close($stmt);
+mysqli_close($connection);
 ?>
+

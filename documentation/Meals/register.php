@@ -19,11 +19,12 @@ include("connect.php");
 <body>
     <div class="register-box">
         <div class="register-header">
+            <h1>MEAL PLANNER HELPER</h1>
             <header>Register</header>
         </div>
         <form method = "POST" action="register_process.php" >
             <div class="input-box">
-                <input type="email" name="email" class="input-field" placeholder="Email" autocomplete="off" value="<?php echo htmlspecialchars($email,ENT_QUOTES);?>" required>
+                <input type="email" name="email" class="input-field" placeholder="Email" autocomplete="off" value="<?php echo htmlspecialchars($email ?? '', ENT_QUOTES); ?>" required>
             </div>
             <div class="input-box">
                 <input type="text" name="username" class="input-field" placeholder="Username" autocomplete="off" value="<?php echo htmlspecialchars($username,ENT_QUOTES);?>" required>
@@ -35,9 +36,10 @@ include("connect.php");
                 <input type="password" name="psw_repeat" class="input-field" placeholder=" Confirm Password" autocomplete="off" value="<?php echo htmlspecialchars($password,ENT_QUOTES);?>" required>
             </div>
             <div class="input-submit">
-                <button class="submit-btn" name="submit" id="submit"></button>
-                <label for="submit">Sign In</label>
+                <button class="submit-btn" name="register" id="register"></button>
+                <label for="register">Sign In</label>
             </div>
+            
         </form>
         <div class="log-in-link">
             <p>Already have an account? <a href="login.php">Login Now</a></p>

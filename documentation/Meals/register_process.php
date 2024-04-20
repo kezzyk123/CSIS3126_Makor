@@ -1,49 +1,43 @@
 <?php
-include("connect.php"); // Include the database connection file
 
-// Check if form is submitted
-if(isset($_POST['submit'])){
-    // Get form data
-    $email = $_POST["email"];
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-    $psw_repeat = $_POST["psw_repeat"];
+include("connect.php");
 
-    // Validate form data
-    if(empty($email) || empty($username) || empty($password) || empty($psw_repeat)){
-        // Handle empty fields
-        $error = "All fields are required.";
-    } elseif($password != $psw_repeat){
-        // Handle password mismatch
-        $error = "Passwords do not match.";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get email, username, and password from the form
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $psw_repeat = $_POST['psw_repeat'];
+
+    //  validation checks
+    if ($password != $psw_repeat) {
+        $error = "Passwords do not match";
     } else {
-        // Check if the user already exists
-        $query = "SELECT * FROM users WHERE email='$email' OR username='$username'";
+        // Checks
+        $query = "SELECT * FROM users WHERE email='$email'";
         $result = mysqli_query($connection, $query);
 
-        if(mysqli_num_rows($result) > 0){
-            // Handle user already exists
-            $error = "User already exists with the given email or username.";
+        if (mysqli_num_rows($result) > 0) {
+            $error = "Email is already registered";
         } else {
-           
+            // Hash 
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insert new user data into the database
-            $insert_query = "INSERT INTO users (email, username, password) VALUES ('$email', '$username','$password')";
-            $insert_result = mysqli_query($connection, $insert_query);
-
-            if($insert_result){
-                // Registration successful
-                header("Location: index.php"); // Redirect to login page
+            // Insert user into the database
+            $insert_query = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashed_password')";
+            if (mysqli_query($connection, $insert_query)) {
+                
+                header("Location: login.php");
                 exit();
             } else {
-                // Handle database insertion error
-                $error = "Error occurred while registering user.";
+                $error = "Error: " . mysqli_error($connection);
             }
         }
     }
 }
 
-// If there are errors or form is not submitted, redirect back to register page
-header("Location: register.php?error=" . urlencode($error));
-exit();
+
+mysqli_close($connection);
 ?>
+

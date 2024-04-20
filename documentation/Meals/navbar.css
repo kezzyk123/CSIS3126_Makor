@@ -1,0 +1,196 @@
+
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(3rem,100%)1fr));
+    grid-gap: 1rem;
+  }
+
+
+  .prep-time-sticker {
+    background-color: #495057;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    position: 50px;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+  }
+
+  .label-sticker {
+    background-color: #495057;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    z-index: 1;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 10px;
+    background-color: #495057;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .btn-shopping {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 10px;
+    background-color: #495057;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+
+  .btn:hover {
+    background-color: #343a40;
+  }
+
+  
+  .btn-shopping:hover {
+    background-color: #343a40;
+  }
+
+  h3 {
+    color: #343a40;
+    font-size: 1.2rem;
+    margin-top: 0;
+    position: relative;
+  }
+
+  p {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .nav {
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav ul li {
+    margin-right: 30px;
+}
+
+.nav ul li:last-child {
+    margin-right: 0;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 17px;
+    font-family: verdana;
+    color: black;
+}
+
+.nav ul li a:hover {
+    color: #495057;
+}
+
+.logo img {
+    width: 80px;
+}
+
+.nav ul .active::after {
+    content: "";
+    width: 60%;
+    height: 3px;
+    background-color: gray;
+    display: flex;
+    position: relative;
+    margin-left: 10px;
+}
+
+.card {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.card ul li {
+    margin-bottom: 10px;
+}
+
+.card form {
+    margin-top: 20px;
+}
+
+.card label {
+    font-weight: bold;
+}
+
+.card input[type="number"],
+.card textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.card button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card button[type="submit"]:hover {
+    background-color: #0056b3;
+}

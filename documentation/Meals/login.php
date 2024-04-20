@@ -1,6 +1,6 @@
 <?php
 
-include("connect.php");
+    include("connect.php");
 
 ?>
 
@@ -17,9 +17,10 @@ include("connect.php");
 <body>
     <div class="login-box">
         <div class="login-header">
+            <h1>MEAL PLANNER HELPER</h1>
             <header>Login</header>
         </div>
-        <form method = "POST" action ="login_process.php">
+        <form method="POST" action ="login_process.php">
             <div class="input-box">
                 <input type="text" class="input-field" name="username" placeholder="Username" autocomplete="off" required>
             </div>
@@ -27,8 +28,9 @@ include("connect.php");
                 <input type="password" class="input-field" name="password" placeholder="Password" autocomplete="off" required>
             </div>
             <div class="input-submit">
-                <button class="submit-btn" name="submit"></button>
+                <button class="submit-btn" name="submit" id="submit"></button>
                 <label for="submit">Sign In</label>
+
             </div>
         </form>
         <div class="sign-up-link">

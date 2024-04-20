@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+</head>
+<body>
+    <h1>Create a New Shopping List</h1>
+    <form action="create_list.php" method="post">
+        <label for="list_title">Enter Title for Your Shopping List:</label><br>
+        <input type="text" id="list_title" name="list_title"><br><br>
+        <input type="submit" value="Create Shopping List">
+    </form>
+
+    <h2>Meals</h2>
+    <ul>
+        <li>Spaghetti Bolognese <button onclick="addToShoppingList('Spaghetti Bolognese')">Add to Shopping List</button></li>
+        <li>Chicken Stir-Fry <button onclick="addToShoppingList('Chicken Stir-Fry')">Add to Shopping List</button></li>
+        <li>Vegetable Soup <button onclick="addToShoppingList('Vegetable Soup')">Add to Shopping List</button></li>
+    </ul>
+
+    <script>
+        function addToShoppingList(meal) {
+            alert("Adding ingredients of " + meal + " to shopping list");
+            // You can implement AJAX here to send the selected meal to PHP for adding ingredients to the shopping list
+        }
+    </script>
+</body>
+</html>
