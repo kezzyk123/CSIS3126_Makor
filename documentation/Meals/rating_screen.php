@@ -4,7 +4,7 @@ include("connect.php");
 
 session_start();
 
-// Function to handle form submission
+//handle form submission on same page
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate form 
     $errors = [];
@@ -13,14 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rating = $_POST['rating'];
     $comment = $_POST['comment'];
 
-    // Insert the review into the database 
+    // Inserts the review into my comments database I joined this with my users and meals table
     if (empty($errors)) {
         $sql_insert_review = "INSERT INTO comments (user_id, meal_id, rating, comment) VALUES (?, ?, ?, ?)";
         $stmt_insert_review = mysqli_prepare($connection, $sql_insert_review);
         mysqli_stmt_bind_param($stmt_insert_review, "iiis", $user_id, $meal_id, $rating, $comment);
         mysqli_stmt_execute($stmt_insert_review);
 
-        // Redirect back to the same page to refresh the reviews
+        // Redirects back to the same page 
         header("Location: {$_SERVER['PHP_SELF']}");
         exit();
     }
@@ -66,7 +66,8 @@ foreach ($meals as $meal) {
                     <li><a href="about.php">About Us</a></li>
                     <li><a  href="meal_gallery.php">Browse Meals</a></li>
                     <li><a href="shopping_list.php">Shopping List</a></li> 
-                    <li><a class="active" href="rating_screen.php">Meal Reviews</a></li>           
+                    <li><a class="active" href="rating_screen.php">Meal Reviews</a></li>     
+                    <li><a href="add_meals.php">Add Custom Meals</a></li>         
                 </ul>         
                 <div class=>
                     <button class="w3-button w3-white w3-border w3-border-red w3-round-large" onclick="window.location.href='logout.php'" class="logout">Log out</button>
@@ -76,6 +77,7 @@ foreach ($meals as $meal) {
     </section>
 
 <h1>Meal Reviews</h1>
+<h5>Users please rate and comment on meals<br> Your feeback is highly apperciated. </h5>
 
 <div class="card">
 <?php foreach ($meals as $meal): ?>
@@ -98,7 +100,7 @@ foreach ($meals as $meal) {
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="hidden" name="meal_id" value="<?php echo $meal['meal_id']; ?>">
         <label for="rating">Rating:</label>
-        <input type="number" name="rating" id="rating" min="1" max="5" required>
+        <input type="number" name="rating" id="rating" min="1" max="5" placeholder="Rate from 1-5, 5 being the best"required>
         <br>
         <label for="comment">Comment:</label>
         <textarea name="comment" id="comment" required></textarea>
@@ -110,3 +112,6 @@ foreach ($meals as $meal) {
 
 </body>
 </html>
+
+
+<?php include("footer.php"); ?>

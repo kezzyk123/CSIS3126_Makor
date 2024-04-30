@@ -116,6 +116,22 @@
         }
 
         /* css for my shopping list*/
+        #shoppingListsContainer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px; /* Adjust the width as needed */
+        height: 100%; /* Take full height of the screen */
+        background-color: #f0f0f0; /* Example background color */
+        overflow-y: auto; /* Enable vertical scrolling if content overflows */
+        border-left: 1px solid #ccc; /* Example border for separation */
+        padding: 20px; /* Example padding for content spacing */
+        box-sizing: border-box; /* Include padding and border in element's total width and height */
+    }
+
+      
+
+
 
 
     </style>
@@ -130,7 +146,8 @@
                     <li><a href="about.php">About Us</a></li>
                     <li><a  href="meal_gallery.php">Browse Meals</a></li>
                     <li><a class="active" href="shopping_list.php">Shopping List</a></li>       
-                    <li><a href="rating_screen.php">Meal Reviews</a></li>      
+                    <li><a href="rating_screen.php">Meal Reviews</a></li>    
+                    <li><a  href="add_meals.php">Add Custom Meals</a></li>     
                 </ul>         
                 <div class=>
                     <button class="w3-button w3-white w3-border w3-border-red w3-round-large" onclick="window.location.href='logout.php'" class="logout">Log out</button>
@@ -142,74 +159,71 @@
     <h1>Shopping List</h1>
 
     <button onclick="createNewList()">Create New List</button>
-    <button onclick="fetchShoppingLists()">Display Shopping Lists</button>
+    <button onclick="fetchShoppingLists()" >Display Shopping Lists</button>
+   
+    
+  
 
+
+
+            
+        <script>
         
-    <script>
-      
-        let listCounter = 1;
-/* function to create a new list*/
-        function createNewList() {
-            const listName = prompt("Enter the name for your new list:");
-            if (listName) {
-                const newListId = `list-${listCounter}`;
-                const newListTitle = document.createElement('h2');
-                newListTitle.textContent = listName;
-                document.body.appendChild(newListTitle);
+            let listCounter = 1;
+    /* function to create a new list*/
+            function createNewList() {
+                const listName = prompt("Enter the name for your new list:");
+                if (listName) {
+                    const newListId = `list-${listCounter}`;
+                    const newListTitle = document.createElement('h2');
+                    newListTitle.textContent = listName;
+                    document.body.appendChild(newListTitle);
 
-                const newListForm = document.createElement('form');
-                newListForm.id = `form-${newListId}`;
-                newListForm.innerHTML = `
-                    <input type="text" id="item-${newListId}" placeholder="Item">
-                    <input type="number" id="quantity-${newListId}" placeholder="Quantity">
-                    <button type="button" onclick="addItem('${newListId}')">Add</button>
-                `;
-                document.body.appendChild(newListForm);
+                    const newListForm = document.createElement('form');
+                    newListForm.id = `form-${newListId}`;
+                    newListForm.innerHTML = `
+                        <input type="text" id="item-${newListId}" placeholder="Item">
+                        <input type="number" id="quantity-${newListId}" placeholder="Quantity">
+                        <button type="button" onclick="addItem('${newListId}')">Add</button>
+                    `;
+                    document.body.appendChild(newListForm);
 
-                const newList = document.createElement('ul');
-                newList.id = `items-${newListId}`;
-                newList.className = 'shopping-list';
-                document.body.appendChild(newList);
+                    const newList = document.createElement('ul');
+                    newList.id = `items-${newListId}`;
+                    newList.className = 'shopping-list';
+                    document.body.appendChild(newList);
 
-                listCounter++;
+                    const saveButton = document.createElement('button');
+                    saveButton.textContent = 'Save';
+                    saveButton.onclick = function() {
+                        createNewListAJAX(listName, newListId);
+                    };
+                    document.body.appendChild(saveButton);
 
-                // Call function to fetch and display shopping lists
-                fetchShoppingLists();
-                createNewListAJAX(listName, newListId);
-            }
-        }
-/* this is suppose to add list name to the database*/
-        function createNewListAJAX(listName, newListId) {
-            const formData = new FormData();
-            formData.append('list_name', listName);
+                    listCounter++;
 
-            fetch('creat_list.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Handle response
-                console.log(data); // Log the response from the server
-            })
-            .catch(error => console.error('Error creating new list:', error));
+                    // Call function to fetch and display shopping lists
+                    fetchShoppingLists();
+                    createNewListAJAX(listName, newListId);
+                }
             }
 
-        function addItem(listId) {
-            const itemField = document.getElementById(`item-${listId}`);
-            const quantityField = document.getElementById(`quantity-${listId}`);
-            const item = itemField.value.trim();
-            let quantity = quantityField.value.trim();
-            if (item !== '' && quantity === '') {
-                quantity = '1';
-            }
-            if (item !== '') {
-                // Send AJAX request to add item to the list
+            function createNewListAJAX(listName, newListId) {
+                const items = Array.from(document.getElementById(`items-${newListId}`).querySelectorAll('li'));
+                const itemList = items.map(item => {
+                    const itemName = item.textContent.split(' - ')[0];
+                    const quantity = parseInt(item.textContent.split(' - ')[1].split(':')[1]);
+                    return { item_name: itemName, quantity: quantity };
+                });
+
+                // Prepare form data
                 const formData = new FormData();
-                formData.append('list_name', listId); 
-                formData.append('item_name', item); 
-                formData.append('quantity', quantity);
-                fetch('creat_list.php', {
+                formData.append('list_name', listName);
+                formData.append('list_id', newListId);
+                formData.append('item_list', JSON.stringify(itemList));
+
+                // Send AJAX request to save the list
+                fetch('save_lists.php', {
                     method: 'POST',
                     body: formData
                 })
@@ -217,80 +231,138 @@
                 .then(data => {
                     // Handle response
                     console.log(data); // Log the response from the server
-                    // If successful, update  to display the added item
-                    const list = document.getElementById(`items-${listId}`);
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `x<span id="quantity-${listId}-${item}">${quantity}</span> ${item} <button onclick="incrementQuantity('${listId}', '${item}')">+</button> <button onclick="decrementQuantity('${listId}', '${item}')">-</button> <button onclick="deleteItem(this)">Delete</button>`;
-                    list.appendChild(listItem);
-                    itemField.value = '';
-                    quantityField.value = '';
+                    alert('Shopping list saved successfully!');
                 })
-                .catch(error => console.error('Error adding item to list:', error));
+                .catch(error => console.error('Error saving shopping list:', error));
             }
-        }
 
-/* to delete items*/
-        function deleteItem(button) {
-            const listItem = button.parentNode;
-            const list = listItem.parentNode;
-            list.removeChild(listItem);
-        }
-/* to increment items*/
-        function incrementQuantity(listId, item) {
-            const quantitySpan = document.getElementById(`quantity-${listId}-${item}`);
-            let quantity = parseInt(quantitySpan.textContent);
-            quantity++;
-            quantitySpan.textContent = quantity;
-        }
-/* to decrement items*/
-        function decrementQuantity(listId, item) {
-            const quantitySpan = document.getElementById(`quantity-${listId}-${item}`);
-            let quantity = parseInt(quantitySpan.textContent);
-            if (quantity > 1) {
-                quantity--;
-                quantitySpan.textContent = quantity;
-            }
-        }
 
-        function fetchShoppingLists() {    /* I will fix later*/
-        fetch('fetch_shopping.php')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+            function addItem(listId) {
+                const itemField = document.getElementById(`item-${listId}`);
+                const quantityField = document.getElementById(`quantity-${listId}`);
+                const item = itemField.value.trim();
+                let quantity = quantityField.value.trim();
+                if (item !== '' && quantity === '') {
+                    quantity = '1';
                 }
-                return response.json();
-            })
-            .then(data => {
-                // Process the fetched data and display shopping lists on the page
-                displayShoppingLists(data);
-            })
-            .catch(error => console.error('Error fetching shopping lists:', error));
-    }
+                if (item !== '') {
+                    // Send AJAX request to add item to the list
+                    const formData = new FormData();
+                    formData.append('list_name', listId); 
+                    formData.append('item_name', item); 
+                    formData.append('quantity', quantity);
+                    fetch('creat_list.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        // Handle response
+                        console.log(data); // Log the response from the server
+                        // If successful, update  to display the added item
+                        const list = document.getElementById(`items-${listId}`);
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `x<span id="quantity-${listId}-${item}">${quantity}</span> ${item} <button onclick="incrementQuantity('${listId}', '${item}')">+</button> <button onclick="decrementQuantity('${listId}', '${item}')">-</button> <button onclick="deleteItem(this)">Delete</button>`;
+                        list.appendChild(listItem);
+                        itemField.value = '';
+                        quantityField.value = '';
+                    })
+                    .catch(error => console.error('Error adding item to list:', error));
+                }
+                fetchShoppingLists();
+            }
 
+    /* to delete items*/
+            function deleteItem(button) {
+                const listItem = button.parentNode;
+                const list = listItem.parentNode;
+                list.removeChild(listItem);
+                fetchShoppingLists();
 
+            }
+    /* to increment items*/
+            function incrementQuantity(listId, item) {
+                const quantitySpan = document.getElementById(`quantity-${listId}-${item}`);
+                let quantity = parseInt(quantitySpan.textContent);
+                quantity++;
+                quantitySpan.textContent = quantity;
+                fetchShoppingLists();
+            }
+    /* to decrement items*/
+            function decrementQuantity(listId, item) {
+                const quantitySpan = document.getElementById(`quantity-${listId}-${item}`);
+                let quantity = parseInt(quantitySpan.textContent);
+                if (quantity > 1) {
+                    quantity--;
+                    quantitySpan.textContent = quantity;
+                    fetchShoppingLists();
+                }
+            }
 
-        function displayShoppingLists(shoppingLists) {
-            // Clears existing shopping lists note to self: nned to fix query. I will fix
+            function fetchShoppingLists() {    /* I will fix later*/
+            fetch('fetch_shopping.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Process the fetched data and display shopping lists on the page
+                    displayShoppingLists(data);
+                })
+                .catch(error => console.error('Error fetching shopping lists:', error));
+        }
+
+            function displayShoppingLists(shoppingLists) {
             const shoppingListsContainer = document.getElementById('shoppingListsContainer');
+           
+            // Clear previous content
             shoppingListsContainer.innerHTML = '';
 
-            // Iterate through the fetched shopping lists and display them
+            // Group items by list name
+            const groupedLists = {};
             shoppingLists.forEach(list => {
-                const listTitle = document.createElement('h2');
-                listTitle.textContent = list.list_name;
-                shoppingListsContainer.appendChild(listTitle);
-
-                const listItems = document.createElement('ul');
-                list.items.split(',').forEach(item => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = item;
-                    listItems.appendChild(listItem);
-                });
-                shoppingListsContainer.appendChild(listItems);
+                if (!groupedLists[list.list_name]) {
+                    groupedLists[list.list_name] = [];
+                }
+                groupedLists[list.list_name].push({ item_name: list.item_name, quantity: list.quantity });
             });
+
+            // Create a list to hold the shopping lists
+            const listContainer = document.createElement('ul');
+
+            // Iterate through each shopping list
+            for (const listName in groupedLists) {
+                if (Object.prototype.hasOwnProperty.call(groupedLists, listName)) {
+                    // Create a list item for each shopping list
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `List Name: ${listName}`;
+
+                    // Create a sublist for items
+                    const itemList = document.createElement('ul');
+
+                    // Iterate through each item in the shopping list
+                    groupedLists[listName].forEach(item => {
+                        // Create a list item for each item
+                        const itemListItem = document.createElement('li');
+                        itemListItem.textContent = `${item.item_name} - Quantity: ${item.quantity}`;
+                        itemList.appendChild(itemListItem);
+                    });
+
+                    // Append the sublist to the main list item
+                    listItem.appendChild(itemList);
+
+                    // Append the list item to the list container
+                    listContainer.appendChild(listItem);
+                }
+            }
+
+            // Append the list container to the shoppingListsContainer
+            shoppingListsContainer.appendChild(listContainer);
         }
-
-</script>
-
+      
+    </script>
+          
 </body>
 </html>

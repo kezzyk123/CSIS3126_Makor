@@ -1,7 +1,6 @@
-<?php
 
-include("connect.php");
-?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +8,7 @@ include("connect.php");
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meal Ideas | Meal Gallery</title>
+<script src="search.js"></script>
 <style>
   body {
     font-family: 'Arial', sans-serif;
@@ -19,7 +19,6 @@ include("connect.php");
 
   .gallery {
     display: grid;
-    /*grid-template-columns: repeat(auto-fit, minmax(min(3rem,100%)3fr));*/
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
     grid-gap: 0.09rem;
@@ -179,7 +178,7 @@ include("connect.php");
     margin-left: 10px;
 }
 
-/* CSS for the modal */
+/* CSS for the modal-pop up */
 .modal {
     display: none;
     position: fixed;
@@ -215,9 +214,6 @@ include("connect.php");
     cursor: pointer;
 }
 
-
-
-
 </style>
 </head>
 <body>
@@ -232,7 +228,12 @@ include("connect.php");
                     <li><a class="active" href="meal_gallery.php">Browse Meals</a></li>
                     <li><a href="shopping_list.php">Shopping List</a></li>        
                     <li><a  href="rating_screen.php">Meal Reviews</a></li>     
-                </ul>         
+                    <li><a  href="add_meals.php">Add Custom Meals</a></li>   
+                </ul>     
+                <form id="searchForm">
+                  <input type="text" id="search" name="search" placeholder="Search for a meal or diet..">
+                  <button type="submit">Search</button>
+                </form>    
                 <div class=>
                     <button class="w3-button w3-white w3-border w3-border-red w3-round-large" onclick="window.location.href='logout.php'" class="logout">Log out</button>
                    
@@ -254,14 +255,13 @@ include("connect.php");
 
 <div class="gallery">
   
-    <h2>Gluten-free options</h2>
+   
     <div class="card">
       <div class="label-sticker">Gluten-free</div>
       <div class="prep-time-sticker">30 mins prep</div>
       <img src="Images/Grilled-Salmon-With-Vegetables.png" alt="">
       <div class="card-content">
         <h3>Grilled Salmon with Roasted Vegetables</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(1)">View Ingredients</button>
       </div>
     </div>
@@ -272,10 +272,21 @@ include("connect.php");
       <img src="Images/Stuffed-Peppers-5.png" alt="">
       <div class="card-content">
         <h3>Quinoa Stuffed Bell Peppers</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(2)">View Ingredients</button>
       </div>
     </div>
+
+
+    <div class="card">
+      <div class="label-sticker">Low-sodium</div>
+      <div class="prep-time-sticker">35 mins prep</div>
+      <img src="Images/roasted-chicken-breast-asaparagus.jfif" alt="">
+      <div class="card-content">
+        <h3>Roasted Chicken Breast with Asparagus</h3>
+        <button class="btn" onclick="showIngredients(24)">View Ingredients</button>
+      </div>
+    </div>
+
 
     <div class="card">
       <div class="label-sticker">Gluten-free</div>
@@ -283,7 +294,6 @@ include("connect.php");
       <img src="Images/chicken-vegetables-stir-fry.png" alt="">
       <div class="card-content">
         <h3>Chicken and Vegetables Stir-fry with Tamari Sauce</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(3)">View Ingredients</button>
       </div>
     </div>
@@ -292,14 +302,12 @@ include("connect.php");
 
 <div class="gallery">
   
-    <h2>Gluten-free options <br> ~heart-healthy~</h2>
     <div class="card">
       <div class="label-sticker">Gluten-free</div>
       <div class="prep-time-sticker">1hr prep</div>
       <img src="Images/lentil-soup-carrots-spinach.jfif" alt="">
       <div class="card-content">
         <h3>Lentil Soup with Spinach and Carrots</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(4)">View Ingredients</button>
       </div>
     </div>
@@ -310,7 +318,6 @@ include("connect.php");
       <img src="Images/pesto-tomatoes.jfif" alt="">
       <div class="card-content">
         <h3>Zucchini Noodles with Pesto and Cherry Tomatoess</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(5)">View Ingredients</button>
       </div>
     </div>
@@ -321,7 +328,6 @@ include("connect.php");
       <img src="Images/baked-chicken-sweetpotatoes.jpg" alt="">
       <div class="card-content">
         <h3>Baked Chicken with Sweet Potato Wedges</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(6)">View Ingredients</button>
       </div>
     </div>
@@ -331,7 +337,6 @@ include("connect.php");
       <img src="Images\tofu-vegetable-curry.jfif" alt="">
       <div class="card-content">
         <h3>Tofu and Vegetable Curry with Coconut Milk</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(13)">View Ingredients</button>
       </div>
     </div>
@@ -339,15 +344,13 @@ include("connect.php");
 </div>
 
 <div class="gallery">
-  
-    <h2>Gluten-free options</h2>
+
     <div class="card">
       <div class="label-sticker">Gluten-free</div>
       <div class="prep-time-sticker">15 mins prep</div>
       <img src="Images/shrimp-avocadosalad.jfif" alt="">
       <div class="card-content">
         <h3>Shrimp and Avocado Salad with Citrus</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(7)">View Ingredients</button>
       </div>
     </div>
@@ -358,7 +361,6 @@ include("connect.php");
       <img src="Images/turkey-chilli with black beans.jfif" alt="">
       <div class="card-content">
         <h3>Turkey Chili with Black Beans and Corn</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(8)">View Ingredients</button>
       </div>
     </div>
@@ -369,7 +371,6 @@ include("connect.php");
       <img src="Images/s-feta-stuffed-chicken.jfif" alt="">
       <div class="card-content">
         <h3>Spinach and Feta Stuffed Chicken Breast</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(9)">View Ingredients</button>
       </div>
     </div>
@@ -380,7 +381,6 @@ include("connect.php");
       <img src="Images/quinoa-salad-cucumbers.jfif" alt="">
       <div class="card-content">
         <h3>Quinoa Salad with Cucumber, Tomato, and Feta Cheese</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(15)">View Ingredients</button>
       </div>
     </div>
@@ -389,14 +389,13 @@ include("connect.php");
 
 <div class="gallery">
   
-    <h2>Gluten-free options</h2>
+
     <div class="card">
       <div class="label-sticker">Gluten-free</div>
       <div class="prep-time-sticker">25 mins prep</div>
       <img src="Images/cauliflower-fried-rice.jfif" alt="">
       <div class="card-content">
         <h3>Cauliflower Fried Rice with Mixed Vegetables</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(10)">View Ingredients</button>
       </div>
     </div>
@@ -407,7 +406,6 @@ include("connect.php");
       <img src="Images/gluten-free-pizza.jfif" alt="">
       <div class="card-content">
         <h3>Gluten-Free Pizza with Tomato Sauce and Fresh Basil</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(11)">View Ingredients</button>
       </div>
     </div>
@@ -418,7 +416,6 @@ include("connect.php");
       <img src="Images/eggplant-parm.jfif" alt="">
       <div class="card-content">
         <h3>Eggplant Parmesan with Marinara Sauce</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(12)">View Ingredients</button>
       </div>
     </div>
@@ -430,7 +427,6 @@ include("connect.php");
       <img src="Images/steak-lettuce-wraps.jfif" alt="">
       <div class="card-content">
         <h3>Steak Lettuce Wraps with Sautéed Mushrooms</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(14)">View Ingredients</button>
       </div>
     </div>
@@ -438,15 +434,13 @@ include("connect.php");
 </div>
 
 <div class="gallery">
-  
-    <h2>High-Protein options <br> ~heart-healthy~</h2>
+ 
     <div class="card">
       <div class="label-sticker"><High-protein></div>
       <div class="prep-time-sticker">5 mins prep</div>
       <img src="Images/greek-yogurt-parfait.jfif" alt="">
       <div class="card-content">
         <h3>Greek Yogurt Parfait with Mixed Berries and Almond</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(16)">View Ingredients</button>
       </div>
     </div>
@@ -457,7 +451,6 @@ include("connect.php");
       <img src="Images/tuna-salad-wrap.jfif" alt="">
       <div class="card-content">
         <h3>Tuna Salad Wrap</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(17)">View Ingredients</button>
       </div>
     </div>
@@ -468,7 +461,6 @@ include("connect.php");
       <img src="Images/chicken-vegetables-stir-fry.png" alt="">
       <div class="card-content">
         <h3>Chicken and Vegetable Stir-Fry</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(18)">View Ingredients</button>
       </div>
     </div>
@@ -478,7 +470,6 @@ include("connect.php");
       <img src="Images/egg-s-omelette.jfif" alt="">
       <div class="card-content">
         <h3>Egg and Spinach Omelette</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(19)">View Ingredients</button>
       </div>
     </div>
@@ -488,14 +479,12 @@ include("connect.php");
 
 <div class="gallery">
   
-    <h2>No Preference options</h2>
     <div class="card">
       <div class="label-sticker">No-preference</div>
       <div class="prep-time-sticker">40 mins prep</div>
       <img src="Images/classic-spaghetti-bolognese.jfif" alt="">
       <div class="card-content">
         <h3>Classic Spaghetti Bolognese</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(20)">View Ingredients</button>
       </div>
     </div>
@@ -505,7 +494,6 @@ include("connect.php");
       <img src="Images/pasta-alfredo-chicken.jfif" alt="">
       <div class="card-content">
         <h3>Pasta Alfredo with Chicken</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(21)">View Ingredients</button>
       </div>
     </div>
@@ -516,7 +504,6 @@ include("connect.php");
       <img src="Images/s-ricotta-stuffed-chells.jfif" alt="">
       <div class="card-content">
         <h3>Spinach and Ricotta Stuffed Shells</h3>
-        <button class="btn-shopping" id="2">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(22)">View Ingredients</button>
       </div>
     </div>
@@ -527,7 +514,6 @@ include("connect.php");
       <img src="Images/creamy-carbonara.jfif" alt="">
       <div class="card-content">
         <h3>Creamy Carbonara</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(23)">View Ingredients</button>
       </div>
     </div>
@@ -538,14 +524,12 @@ include("connect.php");
 
 <div class="gallery">
   
-    <h2>Low-sodium options</h2>
     <div class="card">
       <div class="label-sticker">Low-sodium</div>
       <div class="prep-time-sticker">35 mins prep</div>
       <img src="Images/roasted-chicken-breast-asaparagus.jfif" alt="">
       <div class="card-content">
         <h3>Roasted Chicken Breast with Asparagus</h3>
-        <button class="btn-shopping" id="1">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(24)">View Ingredients</button>
       </div>
     </div>
@@ -558,7 +542,6 @@ include("connect.php");
       <img src="Images/Stuffed-Peppers-5.png" alt="">
       <div class="card-content">
         <h3>Spinach and Feta Stuffed Bell Peppers</h3>
-        <button class="btn-shopping" id="3">Add to Shopping List</button>
         <button class="btn" onclick="showIngredients(25)">View Ingredients</button>
       </div>
     </div>
@@ -566,6 +549,35 @@ include("connect.php");
 </div>
 
 
+<div class="gallery">
+  <?php
+  include("connect.php");
+
+  // Retrieve meals from the database
+  $sql = "SELECT * FROM meals WHERE meal_id > 28";
+  $result = mysqli_query($connection, $sql);
+
+  // Check if there are any meals
+  if (mysqli_num_rows($result) > 0) {
+      // Output data of each row
+      while($row = mysqli_fetch_assoc($result)) {
+          // Generate HTML card for each meal
+          echo '<div class="card">';
+          echo '<div class="label-sticker">' . $row["meal_category"] . '</div>';
+          echo '<div class="prep-time-sticker">' . $row["prep_time"] . '</div>';
+          echo '<img src="' . $row["image_path"] . '" alt="">';
+          echo '<div class="card-content">';
+          echo '<h3>' . $row["meal_name"] . '</h3>';
+          echo '<button class="btn" onclick="showIngredients(' . $row["meal_id"] . ')">View Ingredients</button>';
+          echo '</div>';
+          echo '</div>';
+      }
+  } else {
+      echo "0 results";
+  }
+  mysqli_close($connection);
+  ?>
+</div>
 
 
 
@@ -625,3 +637,5 @@ function showIngredients(meal_id) {
 
 
 
+
+<?php include("footer.php"); ?>

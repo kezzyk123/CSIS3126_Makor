@@ -23,8 +23,7 @@
     <script>
         function addToShoppingList(meal) {
             alert("Adding ingredients of " + meal + " to shopping list");
-            // You can implement AJAX here to send the selected meal to PHP for adding ingredients to the shopping list
-        }
+            
     </script>
 </body>
 </html>

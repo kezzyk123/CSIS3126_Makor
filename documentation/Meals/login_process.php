@@ -37,10 +37,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Invalid password
             $error = "Invalid username or password";
+            header("Location: login.php");
         }
     } else {
         // User does not exist
         $error = "Invalid username or password";
+        
     }
 }
 

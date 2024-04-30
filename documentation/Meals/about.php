@@ -81,6 +81,7 @@
                     <li><a href="meal_gallery.php">Browse Recipes</a></li>
                     <li><a href="shopping_list.php">Shopping List</a></li>   
                     <li><a href="rating_screen.php">Meal Reviews</a></li> 
+                    <li><a href="add_meals.php">Add Custom Meals</a></li>   
                              
                 </ul>         
                 <div>
@@ -111,3 +112,6 @@
     
 </body>
 </html>
+
+
+<?php include("footer.php"); ?>

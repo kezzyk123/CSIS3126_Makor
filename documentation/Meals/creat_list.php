@@ -1,28 +1,34 @@
 <?php
-session_start();
-include_once "connect.php";
+include_once "connect.php"; // Include database connection
 
-if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
-    exit;
-}
+// Check if required data is received via POST
+if(isset($_POST['list_name']) && isset($_POST['item_name']) && isset($_POST['quantity'])) {
+    // Retrieve POST data
+    $listId = $_POST['list_name']; // assuming list_id is passed as list_name
+    $itemName = $_POST['item_name'];
+    $quantity = $_POST['quantity'];
 
-// Get the latest list ID from the database
-$latestListId = 1000; 
-
-if (isset($_POST['list_name'])) {
-    $listName = $_POST['list_name'];
-    $latestListId++; // Increment the list ID counter
-    $sql = "INSERT INTO shopping_lists (list_id, user_id, list_name) VALUES (?, ?, ?)";
+    // Prepare SQL statement to insert item into the shopping_list table
+    $sql = "INSERT INTO shopping_lists (list_id, item_name, quantity) VALUES (?, ?, ?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("iss", $latestListId, $_SESSION['user_id'], $listName);
+
+    // Bind parameters
+    $stmt->bind_param("ssi", $listId, $itemName, $quantity);
+
+    // Execute the statement
     if ($stmt->execute()) {
-        echo "New list created successfully with ID: " . $latestListId;
+        echo "Item added successfully!";
     } else {
-        echo "Error: " . $sql . "<br>" . $stmt->error;
+        echo "Error adding item: " . $stmt->error;
     }
+
+    // Close statement
     $stmt->close();
+} else {
+    echo "Invalid request"; // Error message if required data is not received
 }
 
+// Close connection
 $connection->close();
 ?>
+

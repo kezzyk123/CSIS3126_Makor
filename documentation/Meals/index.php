@@ -27,6 +27,7 @@
                     <li><a href="meal_gallery.php">Browse Meals</a></li>
                     <li><a href="shopping_list.php">Shopping List</a></li>        
                     <li><a href="rating_screen.php">Meal Reviews</a></li>     
+                    <li><a href="add_meals.php">Add Custom Meals</a></li>
                 </ul>         
                 <div>
                     <button class="w3-button w3-white w3-border w3-border-red w3-round-large" onclick="window.location.href='logout.php'" class="logout">Log out</button>
@@ -102,3 +103,6 @@
     </section> 
 </body>
 </html>
+
+
+<?php include("footer.php"); ?>
