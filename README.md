@@ -1,4 +1,4 @@
-/Must download MAMP software and connect to both apache and MySQL server/
+/Must download MAMP software and connect to both apache and MySQL server/ <br>
 Download Meals folder and insert into htdocs
 
 <h1>STEPS:</h1>
