@@ -1,6 +1,8 @@
 //Must download MAMP software and connect to both apache and MySQL server//
 //Download Meals folder and insert into htdocs//
 
+<h1>STEPS:</h1>
+
 1.Inserts Meals directory folder into htcdocs folder within MAMP folder that should appear after download and install.
 
 2.Dowload the SQL dump and import it into phpmyadmin, locate the file to import section under "import"
