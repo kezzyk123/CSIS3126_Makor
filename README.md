@@ -5,7 +5,8 @@ Download Meals folder and insert into htdocs
 
   <p> 1.Inserts Meals directory folder into htcdocs folder within MAMP folder that should appear after download and install.</p>
     
-   <p>2.Download the SQL dump and import it into phpmyadmin, locate the file to import section under "import"
+   <p>
+    2.Download the SQL dump and import it into phpmyadmin, locate the file to import section under "import"
     
     3.Now that you have the SQL in phpmyadmin and the  "meals" directory in your MAMP folder (htdocs), go into login.php to be able to sign in and create an account.
     
